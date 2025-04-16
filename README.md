@@ -8,11 +8,20 @@
 <p align="center">기간 | 2024.04 ~ 2024.06.10</p>
 <p align="center">팀원 | 곽유나, 최원탁</p>
 
-<p align="center">
- <a href="https://www.notion.so/thene/API-47d29e4b3a4342feae2cbb5f2d82a11f?pvs=4">API 명세서</a> • 
-  <a href="https://www.notion.so/thene/ER-766f1354eb824c528243be0a721e2296?pvs=4">E-R 다이어그램</a> • 
-  <a href="https://www.notion.so/thene/JPA-Entity-c6ba42135bb24551a96520efd55def0a?pvs=4">Entity 설계</a> • 
-</p>
+<div align="center">
+  
+  *세부 기능 및 기획은 아래 링크를 참고해주세요.* </br> https://github.com/kyoona/AiKu_backend
+  
+</div>
+
+<div align="center">
+  
+  ### ER Diagram
+  
+  <img width=800 src="https://github.com/user-attachments/assets/c3abe611-f7d2-4df4-a3cb-e2474c71b4b1" />
+
+
+</div>
 <br/>
 
 <h2 id="technologies">🛠️ 기술</h2>
@@ -27,53 +36,36 @@
 | Cloud Service | Firebase Messaging |
 
 </br>
-<h2>💻주요 화면 및 기능</h2>
-
-### 1. 그룹 생성 및 그룹 내 약속 생성
-- 그룹을 생성하고 카카오톡 url 공유를 통해 사용자를 초대할 수 있습니다.
-- 그룹 내 약속을 생성할 수 있고 사용자는 자유롭게 약속에 참가할 수 있습니다.
-- 약속 시간의 30분 전까지 '꼴찌 고르기' 베팅을 할 수 있습니다.
-![그림1](https://github.com/user-attachments/assets/52e1a1a5-f48a-4d60-9f13-ce01506e43a5)
-### 2. 맵 & 실시간 위치 공유
-- 약속 시간 30분 전 알림과 함께 맵 기능이 열립니다.
-- 맵에서 참가자들의 실시간 위치를 확인할 수 있습니다.
-- 다른 참가자와 포인트를 걸고 '레이싱'게임을 진행할 수 있습니다.
-- 참가자 모두가 약속 장소에 도착하거나, 약속 시간 30분 후에 알림과 함께 맵이 종료됩니다.
-![그림2](https://github.com/user-attachments/assets/e7505a27-7059-4c15-9416-27346d327bca)
-### 3. 결과 분석
-- 맵이 종료된 후 도착 순위와 베팅 결과를 확인할 수 있습니다.
-- 그룹 내 모든 약속 결과를 분석한 결과를 확인할 수 있습니다.
-![그림3](https://github.com/user-attachments/assets/4d29de98-dff2-4ae9-a06c-99e666d80cb6)
 
 <h2>👩🏻‍💻구현 파트</h2>
 
-### 곽유나
-<b>그룹 기능</b><br/>
-- @SpringBootTest를 통한 통합 테스트를 작성하고 실행하였습니다.
-- Mokito를 통해 외부 라이브러리의 의존성을 제거 하여 단위 테스트를 작성하고 실행하였습니다.
+### 최원탁
+
+기획과 ERD 작성, 백엔드 서버 기능 개발을 담당하였습니다.   
+
+<b>사용자 인증 기능</b><br/>
+- Spring Security를 통한 JWT 인증 인가 로직을 작성하였습니다.
+- 카카오 로그인 및 회원가입을 구현하고, 테스트 코드를 작성하였습니다.
 
 
-<b>약속 기능</b><br/>
-- ApplicationEvent를 통해 서비스간 의존성 최소화
-  약속 서비스에는 약속 알람, 맵 오픈 로직 예약, 맵 자동 종료 로직 예약과 같은 많은 부가 기능을 요구합니다. 서비스에서 서비스를 호출 하며 SchedulerService에서 많은 책임을 지기 보다는 ApplicationEvent를 통해 event를 publish 하고 observer가 처리하며 서비스간 의존성을 최소화 했습니다.
-- Executors.newScheduledThreadPool()을 통해 지정된 시간에 실행되어야 할 로직들을 예약합니다. 반환받은 ScheduledFuture은 스케줄에 변동이 있을떄 예약한 로직에 대한 변동을 관리하기 위해 따로 저장하고 관리합니다.
+<b>아이템 및 칭호 부여</b><br/>
+- 아이템 구매 및 사용 로직을 MVC 패턴을 이용하여 구현하였습니다.
+- 스프링 @EventListener를 이용하여 스케줄 종료 이벤트를 감지하고, 칭호를 자동 부여하는 기능을 작성하였습니다.
+
+<b>베팅 시스템</b><br/>
+- 베팅을 추가하고, 변경하는 로직을 작성하였습니다.
+- 스프링 @EventListener를 이용하여 스케줄 종료 이벤트를 감지하고, 베팅 포인트 정산을 진행하는 기능을 작성하였습니다.
+- 그룹 베팅 내역에 대한 정산 로직을 작성하고, 이 결과를 텍스트로 저장하여 불러오는 시간을 단축하였습니다.
   
-<b>맵 기능</b><br/>
-- Firebase Messaging을 통해 다른 사용자들의 실시간 위치 공유, 다른 사용자에게 이모지 보내기 등의 기능을 구현하였습니다.
+<b>AI 서버 연동</b><br/>
+- 음성 인식을 통해 요일, 시간, 장소를 텍스트로 추출하는 AI API 서버에 대해 HTTP로 음성 파일을 전달하고, 결과값을 반환하는 로직을 개발하였습니다.
 
-<b>공통 클래스 개발</b><br/>
-- data transfer object를 conroller계층과 service계층, repository 계층으로 분리하였습니다.
-  DTO의 계층 구조는 controller dto, service dto, entity로 되어 있으며 controller dto와 service dto의 분리로 서비스 계층은 view에 대한 의존을 최소화 합니다. view에 변화가 생겨 제공해야 할 변수에 변경이 있어도 service계층은 영향을 받지 않습니다. 디자인과 구현이 동시에 진행되어 뷰의 구조가 계속해서 바꼈던 저희 프로젝트를 위해 이와 같은 구조를 채택하였습니다.
-- ExceptionHandler를 통해 오류를 감지하고 사용자에게 일관된 응답을 할 수 있도록 합니다.
-- MDC를 통해 Interception에서 다중 스레드 별 고유 id를 부여하고 이를 추적할 수 있도록 합니다.
+<b>ETC</b><br/>
+- @AuthenticationPrincipal으로 사용자 정보를 가져오던 중 해당 방식으로 가져온 사용자에 대해 준영속 상태로 가져오는 것을 확인하였습니다. JPA의 편리한 Update를 이용하기 위해 OSIV를 필터 단까지 확장시켜 문제를 해결하였습니다.
+- AWS S3를 이용하여 사진 업로드 로직을 추가하였습니다.
+- 스프링 @EventListener를 이용하여 사용자 포인트 증감에 대한 관심사를 분리하고, 한 서비스에서 증감과 내역 로그를 기록할 수 있도록 구성하였습니다.
+- data transfer object를 conroller계층과 service계층, repository 계층으로 분리하였습니다.   
+  DTO의 계층 구조는 controller dto, service dto, entity로 되어 있으며 controller dto와 service dto의 분리로 서비스 계층은 view에 대한 의존을 최소화 합니다.   
+  view에 변화가 생겨 제공해야 할 변수에 변경이 있어도 service계층은 영향을 받지 않습니다. 디자인과 구현이 동시에 진행되어 뷰의 구조가 계속해서 바꼈던 저희 프로젝트를 위해 이와 같은 구조를 채택하였습니다.
+- ExceptionHandler를 통해 에러 관리 로직을 서비스 로직으로부터 분리하고, 클라이언트에게 일관된 응답을 할 수 있도록 합니다.
 
-<h2>🤩개선하고 싶은 점</h2>
-
-- 현재 서비스 내 어그리거트 개념이 도입되어 있지만, 학습하지 못한 상태로 도입했기 떄문에 DDD를 공부하고 적용하고 싶습니다.
-- 개발 주기가 여유롭지 않았던 터라 전체적인 코드 리팩토링이 필요합니다.
-- 조회 기능에 paging을 처리해야합니다.
-- 예약해야할 로직을 Executors.newScheduledThreadPool()를 통해 실행하기 때문에 서버가 종료되면 초기화됩니다. 이를 복구 시킬 수 있는 로직을 개발해야합니다.
-- Git Issue, PR template, Code Review를 통해 깃을 효율적으로 활용하고 싶습니다.
-
-
-현재 런칭을 위해 https://github.com/kyoona/AIKU_NEW 에서 개선하여 프로젝트를 진행하고 있습니다 :)
